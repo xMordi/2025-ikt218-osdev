@@ -1,5 +1,7 @@
 # Install script for directory: /workspaces/2025-ikt218-osdev/src/01_KettleQueens
 
+# Heihei
+
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
   set(CMAKE_INSTALL_PREFIX "/usr/local")
