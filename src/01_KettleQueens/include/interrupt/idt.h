@@ -5,7 +5,7 @@
 
 #define IDT_ENTRIES 256
 
-// Struct for an IDT entry (8 bytes)
+// Struct for an IDT entry 
 typedef struct {
     uint16_t base_low;
     uint16_t sel;       // Kernel segment selector

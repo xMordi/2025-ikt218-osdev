@@ -65,7 +65,7 @@ add_executable(uiaos-kernel
     src/printing/terminal.c
     src/interrupt/interrupts.c
     src/interrupt/idt_flush.asm
-    src/interrupt/isr.asm
+    src/interrupt/stub.asm
     src/interrupt/idt.c
 )
 

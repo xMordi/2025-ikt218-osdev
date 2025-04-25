@@ -36,8 +36,8 @@
 },
 {
   "directory": "/workspaces/2025-ikt218-osdev/build/01_KettleQueens",
-  "command": "/usr/bin/nasm -I/workspaces/2025-ikt218-osdev/src/01_KettleQueens/include -f elf32 -o CMakeFiles/uiaos-kernel.dir/src/interrupt/isr.asm.o /workspaces/2025-ikt218-osdev/src/01_KettleQueens/src/interrupt/isr.asm",
-  "file": "/workspaces/2025-ikt218-osdev/src/01_KettleQueens/src/interrupt/isr.asm"
+  "command": "/usr/bin/nasm -I/workspaces/2025-ikt218-osdev/src/01_KettleQueens/include -f elf32 -o CMakeFiles/uiaos-kernel.dir/src/interrupt/stub.asm.o /workspaces/2025-ikt218-osdev/src/01_KettleQueens/src/interrupt/stub.asm",
+  "file": "/workspaces/2025-ikt218-osdev/src/01_KettleQueens/src/interrupt/stub.asm"
 },
 {
   "directory": "/workspaces/2025-ikt218-osdev/build/01_KettleQueens",

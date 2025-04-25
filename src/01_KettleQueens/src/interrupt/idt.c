@@ -39,7 +39,7 @@ void idt_install() {
 
     outb(0x21, 0x0);
     outb(0xA1, 0x0);
-
+    
     idt_set_gate(0, (uint32_t)isr0);
     idt_set_gate(1, (uint32_t)isr1);
     idt_set_gate(2, (uint32_t)isr2);
@@ -76,7 +76,6 @@ void idt_install() {
     idt_set_gate(128, (uint32_t)isr128);
     idt_set_gate(177, (uint32_t)isr177);
 
-    // IRQs
     idt_set_gate(32, (uint32_t)irq0);
     idt_set_gate(33, (uint32_t)irq1);
     idt_set_gate(34, (uint32_t)irq2);
