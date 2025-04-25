@@ -1,36 +1,31 @@
 #include "libc/stdint.h"
-#include "gdt.h"
-#include "idt.h"
-#include "terminal.h"
+#include "libc/stddef.h"
+#include "libc/stdbool.h"
+#include <multiboot2.h>
 
-void terminal_init();
-void terminal_write(const char* str);
+#include "gdt/gdt.h"
+#include "interrupt/idt.h"
+#include "printing/terminal.h"
 
-void vga_print(const char* str) {
-    volatile char* video = (volatile char*) 0xB8000;
-    while (*str) {
-        *video++ = *str++;
-        *video++ = 0x07;
-    }
-}
+struct multiboot_info {
+    uint32_t size;
+    uint32_t reserved;
+    struct multiboot_tag *first;
+};
 
-int main() {
-    gdt_init();         // Load GDT
-    terminal_write("Installing IDT...\n");
-    idt_install();      // Load IDT
-    terminal_write("IDT installed, enabling interrupts...\n");
-
-    __asm__ volatile ("sti");  // Enable hardware interrupts
-
+int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
+    gdt_init();
     terminal_init();
-    terminal_write("Hello World!\n");
+    idt_install();      
 
-    __asm__ volatile ("int $0x20"); // should trigger isr32_handler
-    __asm__ volatile ("int $0x22"); // should trigger isr34_handler
+    terminal_write("Hello World!\n");
+    terminal_write("Testing divide by zero exception...\n");
+
+    // __asm__ volatile ("int $0x0");  // Trigger divide by zero exception
 
 
     while (1) {
-        __asm__ volatile ("hlt");  // Halt CPU until next interrupt
+    //    __asm__ volatile ("hlt");  // Halt CPU until next interrupt
     }
 
     return 0;
