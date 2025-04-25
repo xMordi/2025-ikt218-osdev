@@ -59,7 +59,6 @@ void isr_handler(struct InterruptRegisters* regs) {
        terminal_write("Exception! System halted.\n");
        for ( ; ; )
        {
-        terminal_write("Halted...\n");
        }
    } 
 }

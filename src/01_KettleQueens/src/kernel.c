@@ -21,11 +21,11 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     terminal_write("Hello World!\n");
     terminal_write("Testing divide by zero exception...\n");
 
-    // __asm__ volatile ("int $0x0");  // Trigger divide by zero exception
+     __asm__ volatile ("int $0x0");  // Trigger divide by zero exception
 
 
     while (1) {
-    //    __asm__ volatile ("hlt");  // Halt CPU until next interrupt
+    __asm__ volatile ("hlt");  // Halt CPU until next interrupt
     }
 
     return 0;
