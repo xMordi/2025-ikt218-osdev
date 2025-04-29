@@ -4,7 +4,7 @@
 #include "libc/stdint.h"
 #include "interrupt/interrupts.h"
 
-// Scancode to ASCII lookup table (defined elsewhere)
+// Scancode to ASCII lookup table 
 extern char scancode_ascii[128];
 
 // Keyboard interrupt handler

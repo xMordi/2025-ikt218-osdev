@@ -48,7 +48,18 @@ void keyboard_handler(struct InterruptRegisters* regs) {
 
     char c = shift_pressed ? scancode_ascii_shifted[scancode] : scancode_ascii[scancode];
     if (c) {
-        char buf[2] = {c, '\0'};
-        terminal_write(buf);
+        if (c == '\b'){
+            // Handle backspace
+            terminal_backspace();  // Handle backspace
+        } else if (c == '\n') {
+            // Handle newline
+            terminal_write("\n");  // Move to the next line
+        } else if (c == '\t') {
+            // Handle tab
+            terminal_write("    ");  // Insert 4 spaces for tab
+        } else {
+            char buf[2] = {c, '\0'};
+            terminal_write(buf);
+        }
     }
 }
