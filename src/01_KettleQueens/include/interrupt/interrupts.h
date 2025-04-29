@@ -3,6 +3,8 @@
 
 #include "libc/stdint.h"
 
+struct InterruptRegisters;
+
 extern void isr0();
 extern void isr1();
 extern void isr2();
@@ -56,7 +58,7 @@ extern void irq13();
 extern void irq14();
 extern void irq15();
 
-struct InterruptRegisters;
+void irq_install_handler(int irq, void (*handler)(struct InterruptRegisters* regs));
 
 void isr_handler(struct InterruptRegisters* regs);
 

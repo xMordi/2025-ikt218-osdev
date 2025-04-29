@@ -6,6 +6,9 @@
 #include "gdt/gdt.h"
 #include "interrupt/idt.h"
 #include "printing/terminal.h"
+#include "interrupt/keyboard.h"
+#include "interrupt/interrupts.h"
+
 
 struct multiboot_info {
     uint32_t size;
@@ -15,13 +18,15 @@ struct multiboot_info {
 
 int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     gdt_init();
+    idt_install();
     terminal_init();
-    idt_install();      
+    irq_install_handler(1, keyboard_handler);
 
     terminal_write("Hello World!\n");
-    terminal_write("Testing divide by zero exception...\n");
+    // terminal_write("Testing divide by zero exception...\n");
 
-     __asm__ volatile ("int $0x0");  // Trigger divide by zero exception
+    // Commented out for the keyboard logger
+    // __asm__ volatile ("int $0x0");  // Trigger divide by zero exception
 
 
     while (1) {
