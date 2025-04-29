@@ -67,6 +67,7 @@ add_executable(uiaos-kernel
     src/interrupt/idt_flush.asm
     src/interrupt/stub.asm
     src/interrupt/idt.c
+    src/interrupt/keyboard.c
 )
 
 # Include directories for the kernel target
