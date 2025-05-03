@@ -1,5 +1,6 @@
 #include "printing/terminal.h"
 #include "libc/stdint.h"
+#include "util.h"
 
 #define VGA_ADDRESS 0xB8000
 #define WHITE_ON_BLACK 0x0F
@@ -9,10 +10,6 @@
 static uint16_t* video_memory = (uint16_t*) VGA_ADDRESS;
 static uint8_t cursor_row = 0;
 static uint8_t cursor_col = 0;
-
-static inline void outb(uint16_t port, uint8_t val) {
-    __asm__ volatile ("outb %1, %0" : : "dN"(port), "a"(val));
-}
 
 static void update_cursor() {
     uint16_t position = cursor_row * VGA_WIDTH + cursor_col;

@@ -8,11 +8,10 @@
 #include "printing/terminal.h"
 #include "interrupt/keyboard.h"
 #include "interrupt/interrupts.h"
-
 #include "kernel/memory.h"
+#include "kernel/pit.h"
 
 extern uint32_t end;
-
 
 struct multiboot_info {
     uint32_t size;
@@ -44,9 +43,8 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
 
     terminal_write("Hello World!\n");
     // terminal_write("Testing divide by zero exception...\n");
+    // __asm__ volatile ("int $0x0");  // Trigger divide by zero exception
 
-
-    // assignment 4
     init_kernel_memory(&end);
     init_paging();
     print_memory_layout();
@@ -65,6 +63,18 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
 
     // Commented out for the keyboard logger
     // __asm__ volatile ("int $0x0");  // Trigger divide by zero exception
+
+
+    // Initialize the PIT (Programmable Interval Timer)
+    init_pit();
+    terminal_write("PIT initialized.\n");
+    terminal_write("Sleeping for 5 seconds...\n");
+    sleep_interrupt(500);  // Sleep for 5 seconds
+    terminal_write("Awake!\n");
+
+    terminal_write("Sleeping for 5 seconds (busy wait)...\n");
+    sleep_busy(500);  // Sleep for 5 seconds using busy wait   
+    terminal_write("Awake from busy wait!\n");
 
 
     while (1) {

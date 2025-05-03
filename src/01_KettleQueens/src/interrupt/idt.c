@@ -1,13 +1,11 @@
 #include "interrupt/idt.h"
 #include "libc/stdint.h"
 #include "interrupt/interrupts.h"
+#include "util.h"
 
 idt_entry_t idt[IDT_ENTRIES];
 idt_ptr_t idt_reg;
 
-static inline void outb(uint16_t port, uint8_t val) {
-    __asm__ volatile ("outb %1, %0" : : "dN"(port), "a"(val));
-}
 
 void idt_set_gate(int n, uint32_t handler) {
     idt[n].base_low  = handler & 0xFFFF;

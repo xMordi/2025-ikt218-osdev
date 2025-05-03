@@ -1,10 +1,7 @@
 #include "printing/terminal.h"
 #include "interrupt/interrupts.h"
 #include "libc/stdint.h"
-
-static inline void outb(uint16_t port, uint8_t val) {
-    __asm__ volatile ("outb %1, %0" : : "dN"(port), "a"(val));
-}
+#include "util.h"
 
 struct InterruptRegisters{
     uint32_t cr2;
