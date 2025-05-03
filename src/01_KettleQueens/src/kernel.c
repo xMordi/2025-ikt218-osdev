@@ -11,6 +11,9 @@
 #include "kernel/memory.h"
 #include "kernel/pit.h"
 
+#include "song/frequencies.h"
+#include "song/song.h"
+
 extern uint32_t end;
 
 struct multiboot_info {
@@ -33,6 +36,28 @@ void print_ptr(void* ptr) {
 
     terminal_write(buf);
     terminal_write("\n");
+}
+
+extern void play_song_impl(Song* song);
+extern SongPlayer* create_song_player();
+extern Note music_1[];
+extern uint32_t music_1_length;
+
+void play_music() {
+    Song songs[] = {
+        { music_1, music_1_length }
+    };
+    uint32_t n_songs = sizeof(songs) / sizeof(Song);
+
+    SongPlayer* player = create_song_player();
+
+    terminal_write("🎵 Starting music playback...\n");
+
+    for (uint32_t i = 0; i < n_songs; i++) {
+        terminal_write("Playing song...\n");
+        player->play_song(&songs[i]);
+        terminal_write("Finished song.\n");
+    }
 }
 
 int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
@@ -75,6 +100,8 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     terminal_write("Sleeping for 5 seconds (busy wait)...\n");
     sleep_busy(500);  // Sleep for 5 seconds using busy wait   
     terminal_write("Awake from busy wait!\n");
+
+    play_music();
 
 
     while (1) {
