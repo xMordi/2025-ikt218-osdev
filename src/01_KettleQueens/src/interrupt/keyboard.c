@@ -23,12 +23,6 @@ static const char scancode_ascii_shifted[128] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
 
-static inline uint8_t inb(uint16_t port) {
-    uint8_t ret;
-    __asm__ volatile ( "inb %1, %0" : "=a"(ret) : "Nd"(port) );
-    return ret;
-}
-
 static bool shift_pressed = false;
 
 void keyboard_handler(struct InterruptRegisters* regs) {
