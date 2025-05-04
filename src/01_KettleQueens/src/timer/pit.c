@@ -1,40 +1,55 @@
 #include "kernel/pit.h"
 #include "util.h"
+#include "interrupt/idt.h"
+#include "interrupt/interrupts.h"
+#include "printing/terminal.h"
 
+uint32_t pit_ticks; 
+
+void pit_handler(struct InterruptRegisters *regs) {
+    pit_ticks++;
+    outb(PIC1_CMD_PORT, PIC_EOI); 
+}
 
 void init_pit() {
-    // Set the PIT to mode 2 (rate generator) with a divisor of 0x4E20
-    outb(PIT_CMD_PORT, 0x34); // Command byte: 00110100
-    outb(PIT_CHANNEL0_PORT, (uint8_t)(PIT_DEFAULT_DIVISOR & 0xFF)); // Low byte
-    outb(PIT_CHANNEL0_PORT, (uint8_t)((PIT_DEFAULT_DIVISOR >> 8) & 0xFF)); // High byte
+    pit_ticks = 0;
+    irq_install_handler(0, &pit_handler); 
 
-    // Unmask the IRQ0 line on the PIC
-    outb(PIC1_DATA_PORT, inb(PIC1_DATA_PORT) & ~0x01);
+    outb(PIT_CMD_PORT, 0x36); // Square wave
+    outb(PIT_CHANNEL0_PORT, (uint8_t)(DIVIDER & 0xFF)); // Low byte
+    outb(PIT_CHANNEL0_PORT, (uint8_t)((DIVIDER >> 8) & 0xFF)); // High byte
 }
 
 void sleep_interrupt(uint32_t milliseconds) {
-    // Calculate the number of ticks needed for the specified milliseconds
-    uint32_t ticks = milliseconds * TICKS_PER_MS;
-
-    // Set up a timer interrupt handler to wake up the process
-    // This is a placeholder; actual implementation would require setting up an interrupt handler
-    // and using a condition variable or semaphore to block the process until the timer expires.
-    // For now, we will just busy wait.
-    for (uint32_t i = 0; i < ticks; i++) {
-        // Wait for the PIT interrupt
-        while (!(inb(PIC1_CMD_PORT) & 0x01));
-        outb(PIC1_CMD_PORT, PIC_EOI); // Send EOI to PIC
+    uint32_t current_ticks = pit_ticks;
+    uint32_t ticks_to_wait = milliseconds * TICKS_PER_MS;
+    uint32_t end_ticks = current_ticks + ticks_to_wait;
+    while (current_ticks < end_ticks) {
+        asm volatile ("sti"); 
+        asm volatile ("hlt"); // Halt CPU until next interrupt
+        current_ticks = pit_ticks;
     }
+   
 }
 
 void sleep_busy(uint32_t milliseconds) {
-    // Calculate the number of ticks needed for the specified milliseconds
-    uint32_t ticks = milliseconds * TICKS_PER_MS;
-
-    // Busy wait for the specified number of ticks
-    for (uint32_t i = 0; i < ticks; i++) {
-        // Wait for the PIT interrupt
-        while (!(inb(PIC1_CMD_PORT) & 0x01));
-        outb(PIC1_CMD_PORT, PIC_EOI); // Send EOI to PIC
+    uint32_t start_ticks = pit_ticks;
+    uint32_t ticks_to_wait = milliseconds * TICKS_PER_MS;
+    uint32_t elapsed_ticks = 0;
+    while (elapsed_ticks < ticks_to_wait) {
+        while (pit_ticks == start_ticks + elapsed_ticks) {
+            // Busy wait   
+        }
+       elapsed_ticks++;
     }
+    
+}
+
+void test_waits(){
+    terminal_write("Testing busy sleep 5s \n");
+    sleep_busy(5000);
+    terminal_write("Awake \n");
+    terminal_write("Testing interrupt sleep 5s \n");
+    sleep_interrupt(5000);
+    terminal_write("Awake \n");
 }
