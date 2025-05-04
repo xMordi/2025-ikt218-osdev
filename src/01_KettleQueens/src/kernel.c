@@ -40,8 +40,9 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     idt_install();
     terminal_init();
     irq_install_handler(1, keyboard_handler);
+    init_pit();
+    terminal_write("Kettle Queens Kernel\n");
 
-    terminal_write("Hello World!\n");
     // terminal_write("Testing divide by zero exception...\n");
     // __asm__ volatile ("int $0x0");  // Trigger divide by zero exception
 
@@ -61,21 +62,7 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     terminal_write("memory3: ");
     print_ptr(memory3);
 
-    // Commented out for the keyboard logger
-    // __asm__ volatile ("int $0x0");  // Trigger divide by zero exception
-
-
-    // Initialize the PIT (Programmable Interval Timer)
-    init_pit();
-    terminal_write("PIT initialized.\n");
-    terminal_write("Sleeping for 5 seconds...\n");
-    sleep_interrupt(500);  // Sleep for 5 seconds
-    terminal_write("Awake!\n");
-
-    terminal_write("Sleeping for 5 seconds (busy wait)...\n");
-    sleep_busy(500);  // Sleep for 5 seconds using busy wait   
-    terminal_write("Awake from busy wait!\n");
-
+    test_waits();
 
     while (1) {
     __asm__ volatile ("hlt");  // Halt CPU until next interrupt
