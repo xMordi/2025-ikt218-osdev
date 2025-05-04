@@ -29,7 +29,6 @@ void sleep_interrupt(uint32_t milliseconds) {
         asm volatile ("hlt"); // Halt CPU until next interrupt
         current_ticks = pit_ticks;
     }
-   
 }
 
 void sleep_busy(uint32_t milliseconds) {
@@ -42,7 +41,6 @@ void sleep_busy(uint32_t milliseconds) {
         }
        elapsed_ticks++;
     }
-    
 }
 
 void test_waits(){
