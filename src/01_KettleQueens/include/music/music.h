@@ -17,14 +17,13 @@ typedef struct {
 } Song;
 
 typedef struct {
-    void (*play_song)(Song* song)
+    void (*play_song)(Song* song);
 } SongPlayer;
 
 SongPlayer* create_song_player();
 void play_song(Song* song);
 
 // Taken from assigment zip
-
 static Note starwars[] = {
     // Opening phrase
     {A4, 500}, {A4, 500}, {A4, 500}, 
@@ -43,4 +42,7 @@ static Note starwars[] = {
     {R, 500}
 };
 
+extern Song starwars_song;
+
+#define PC_SPEAKER_PORT 0x61
 #endif

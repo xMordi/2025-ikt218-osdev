@@ -10,6 +10,7 @@
 #include "interrupt/interrupts.h"
 #include "kernel/memory.h"
 #include "kernel/pit.h"
+#include "music/music.h"
 
 extern uint32_t end;
 
@@ -63,6 +64,16 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     print_ptr(memory3);
 
     test_waits();
+
+    terminal_write("Testing music...\n");
+    SongPlayer* player = create_song_player();
+    if (player == NULL) {
+        terminal_write("Failed to create song player\n");
+        return 1;
+    }
+    
+    player->play_song(&starwars_song);
+    terminal_write("Finished playing song\n");
 
     while (1) {
     __asm__ volatile ("hlt");  // Halt CPU until next interrupt
