@@ -51,3 +51,4 @@ void init_paging()
     paging_enable();                          // Enable paging
     terminal_write("Paging was successfully enabled!\n");
 }
+

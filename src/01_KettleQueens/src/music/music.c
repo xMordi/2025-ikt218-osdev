@@ -6,26 +6,28 @@
 
 void enable_speaker() {
     uint8_t tmp = inb(PC_SPEAKER_PORT);
-    outb(PC_SPEAKER_PORT, tmp | 0x03); // Enable the speaker
+    if (tmp != (tmp | 3))
+    {
+        outb(PC_SPEAKER_PORT, tmp | 3);
+    }
 }
 
 void disable_speaker() {
-    uint8_t tmp = inb(PC_SPEAKER_PORT);
-    outb(PC_SPEAKER_PORT, tmp & 0xFC); // Disable the speaker
+    uint8_t tmp = inb(PC_SPEAKER_PORT & 0xFC);
+    outb(PC_SPEAKER_PORT, tmp); // Disable the speaker
 }
 
 void play_sound(uint32_t frequency) {
     uint32_t divisor = PIT_BASE_FREQUENCY / frequency;
     outb(PIT_CMD_PORT, 0xB6); // Set the command byte
-    outb(PIT_CHANNEL0_PORT, divisor & 0xFF); // Set the low byte
-    outb(PIT_CHANNEL0_PORT, (divisor >> 8) & 0xFF); // Set the high byte
-    enable_speaker();
+    outb(PIT_CHANNEL2_PORT,(uint8_t) (divisor)); // Set the low byte
+    outb(PIT_CHANNEL2_PORT, (uint8_t) (divisor >> 8)); // Set the high byte
+
+    enable_speaker(); // Enable the speaker
 }
 
 void stop_sound() {
-    disable_speaker();
-    outb(PIT_CMD_PORT, 0xB6); // Reset the command byte
-    outb(PIT_CHANNEL0_PORT, 0x00); // Stop the sound
+    disable_speaker(); // Disable the speaker
 }
 
 SongPlayer* create_song_player() {
@@ -52,6 +54,15 @@ void play_song(Song* song) {
 }
 
 Song starwars_song = {
-    .notes = starwars,
-    .length = sizeof(starwars) / sizeof(Note)
+    .notes = starwars_theme,
+    .length = sizeof(starwars_theme) / sizeof(Note)
 };
+
+void test_speaker() {
+    play_sound(440); // Set a valid frequency
+    enable_speaker(); // Enable the speaker
+    sleep_interrupt(2000); // Hold the tone for 2 seconds
+    disable_speaker(); // Disable the speaker
+    stop_sound(); // Stop the PIT signal
+}
+

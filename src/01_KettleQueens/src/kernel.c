@@ -63,7 +63,13 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     terminal_write("memory3: ");
     print_ptr(memory3);
 
-    test_waits();
+    //test_waits();
+
+    /*
+    terminal_write("Testing speaker...\n");
+    test_speaker();
+    terminal_write("Speaker test complete.\n");
+    */
 
     terminal_write("Testing music...\n");
     SongPlayer* player = create_song_player();
@@ -74,6 +80,7 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     
     player->play_song(&starwars_song);
     terminal_write("Finished playing song\n");
+    
 
     while (1) {
     __asm__ volatile ("hlt");  // Halt CPU until next interrupt
@@ -81,4 +88,6 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
 
     return 0;
 }
+
+
 

@@ -45,3 +45,4 @@ void* memset (void * ptr, int value, size_t num )
         *p++ = (unsigned char)value;   // Set each byte to the given value
     return ptr;               // Return the pointer to the block of memory
 }
+
