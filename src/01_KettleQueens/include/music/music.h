@@ -24,7 +24,7 @@ SongPlayer* create_song_player();
 void play_song(Song* song);
 
 // Taken from assigment zip
-static Note starwars[] = {
+static Note starwars_theme[] = {
     // Opening phrase
     {A4, 500}, {A4, 500}, {A4, 500}, 
     {F4, 375}, {C5, 125}, 
@@ -44,5 +44,6 @@ static Note starwars[] = {
 
 extern Song starwars_song;
 
-#define PC_SPEAKER_PORT 0x61
+void test_speaker();
+
 #endif
