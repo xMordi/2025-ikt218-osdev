@@ -42,7 +42,20 @@ void init_kernel_memory(uint32_t* kernel_end)
 // Print the current memory layout
 void print_memory_layout()
 {
-    terminal_write("Memory layout not fully implemented without printf.\n");
+    terminal_write("Memory Layout:\n");
+    terminal_write("Heap Begin: ");
+    print_hex(heap_begin);
+    terminal_write("\nHeap End: ");
+    print_hex(heap_end);
+    terminal_write("\nLast Alloc: ");
+    print_hex(last_alloc);
+    terminal_write("\nPage Heap Begin: ");
+    print_hex(pheap_begin);
+    terminal_write("\nPage Heap End: ");
+    print_hex(pheap_end);
+    terminal_write("\nMemory Used: ");
+    print_hex(memory_used);
+    terminal_write("\n");
 }
 
 // Free a block of memory
