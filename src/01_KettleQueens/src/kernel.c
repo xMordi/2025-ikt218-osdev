@@ -20,7 +20,6 @@ struct multiboot_info {
     struct multiboot_tag *first;
 };
 
-
 // Added to see assignment 4 part 1 working
 void print_ptr(void* ptr) {
     uintptr_t val = (uintptr_t)ptr;
@@ -49,6 +48,9 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
 
     init_kernel_memory(&end);
     init_paging();
+
+    terminal_write("Kernel memory initialized\n");
+    terminal_write("Memory layout:\n");
     print_memory_layout();
 
     void* some_memory = malloc(12345);
@@ -64,12 +66,6 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     print_ptr(memory3);
 
     //test_waits();
-
-    /*
-    terminal_write("Testing speaker...\n");
-    test_speaker();
-    terminal_write("Speaker test complete.\n");
-    */
 
     terminal_write("Testing music...\n");
     SongPlayer* player = create_song_player();
