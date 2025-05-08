@@ -73,4 +73,16 @@ void terminal_write(const char* str) {
 
     // Update the cursor position
     update_cursor();
+    
+}
+
+// Matrix rain
+void terminal_putchar_at(char c, uint8_t x, uint8_t y) {
+    uint16_t pos = y * VGA_WIDTH + x;
+    video_memory[pos] = (WHITE_ON_BLACK << 8) | c;
+}
+
+void terminal_putchar_color_at(char c, uint8_t x, uint8_t y, uint8_t color) {
+    uint16_t pos = y * 80 + x;
+    video_memory[pos] = (color << 8) | c;
 }
