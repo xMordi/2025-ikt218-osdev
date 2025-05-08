@@ -76,6 +76,9 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     
     player->play_song(&starwars_song);
     terminal_write("Finished playing song\n");
+
+    terminal_write("Starting Matrix...\n");
+    run_matrix();
     
 
     while (1) {

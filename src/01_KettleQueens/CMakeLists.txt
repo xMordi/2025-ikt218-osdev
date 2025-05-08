@@ -74,6 +74,7 @@ add_executable(uiaos-kernel
     src/timer/pit.c
     src/util/util.c
     src/music/music.c
+    src/matrix/matrix.c
 )
 
 # Include directories for the kernel target
