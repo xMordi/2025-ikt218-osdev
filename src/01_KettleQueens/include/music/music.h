@@ -43,7 +43,4 @@ static Note starwars_theme[] = {
 };
 
 extern Song starwars_song;
-
-void test_speaker();
-
 #endif
