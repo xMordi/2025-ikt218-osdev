@@ -85,6 +85,8 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     __asm__ volatile ("hlt");  // Halt CPU until next interrupt
     }
 
+    // Minor edit to allow for commit, ignore this line
+
     return 0;
 }
 
