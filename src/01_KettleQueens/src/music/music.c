@@ -26,10 +26,6 @@ void play_sound(uint32_t frequency) {
     enable_speaker(); // Enable the speaker
 }
 
-void stop_sound() {
-    disable_speaker(); // Disable the speaker
-}
-
 SongPlayer* create_song_player() {
     SongPlayer* player = (SongPlayer*)malloc(sizeof(SongPlayer));
     if (player == NULL) {
@@ -43,12 +39,12 @@ void play_song(Song* song) {
     for (uint32_t i = 0; i < song->length; i++) {
         Note note = song->notes[i];
         if (note.frequency == R) {
-            stop_sound();
+            disable_speaker();
             sleep_interrupt(note.duration);
         } else {
             play_sound(note.frequency);
             sleep_interrupt(note.duration);
-            stop_sound();
+            disable_speaker();
         }
     }
 }
@@ -58,11 +54,4 @@ Song starwars_song = {
     .length = sizeof(starwars_theme) / sizeof(Note)
 };
 
-void test_speaker() {
-    play_sound(440); // Set a valid frequency
-    enable_speaker(); // Enable the speaker
-    sleep_interrupt(2000); // Hold the tone for 2 seconds
-    disable_speaker(); // Disable the speaker
-    stop_sound(); // Stop the PIT signal
-}
 
